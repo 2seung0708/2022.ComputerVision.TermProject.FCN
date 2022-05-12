@@ -32,23 +32,43 @@ pip install torchfcn
 
 ## Training
 
-See [VOC example](examples/voc).
+
+```bash
+./download_dataset.sh
+
+./train_fcn32s.py -g 0 --save_ckp
+./train_fcn16s.py -g 0 --save_ckp
+./train_fcn8s.py -g 0 --save_ckp
+
+```
+
+
+## Evaluate
+
+
+```bash
+./download_dataset.sh
+
+./train_fcn32s.py -g 0 -model_file  {model_path} -save_path
+./train_fcn16s.py -g 0 -model_file   {model_path} -save_path
+./train_fcn8s.py -g 0 -model_file  {model_path} -save_path
+
+```
 
 
 ## Accuracy
 
 At `10fdec9`.
 
-| Model | Implementation |   epoch |   iteration | Mean IU | Pretrained Model |
-|:-----:|:--------------:|:-------:|:-----------:|:-------:|:----------------:|
-|FCN32s      | [Original](https://github.com/shelhamer/fcn.berkeleyvision.org/tree/main/voc-fcn32s)       | - | -     | **63.63** | [Download](https://github.com/wkentaro/pytorch-fcn/blob/45c6b2d3f553cbe6369822d17a7a51dfe9328662/torchfcn/models/fcn32s.py#L34) |
-|FCN32s      | Ours                                                                                         |11 | 96000 | 62.84 | |
-|FCN16s      | [Original](https://github.com/shelhamer/fcn.berkeleyvision.org/tree/main/voc-fcn16s)       | - | -     | **65.01** | [Download](https://github.com/wkentaro/pytorch-fcn/blob/45c6b2d3f553cbe6369822d17a7a51dfe9328662/torchfcn/models/fcn16s.py#L17) |
-|FCN16s      | Ours                                                                                         |11 | 96000 | 64.91 | |
-|FCN8s       | [Original](https://github.com/shelhamer/fcn.berkeleyvision.org/tree/main/voc-fcn8s)        | - | -     | **65.51** | [Download](https://github.com/wkentaro/pytorch-fcn/blob/45c6b2d3f553cbe6369822d17a7a51dfe9328662/torchfcn/models/fcn8s.py#L17) |
-|FCN8s       | Ours                                                                                         | 7 | 60000 | 65.49 | |
-|FCN8sAtOnce | [Original](https://github.com/shelhamer/fcn.berkeleyvision.org/tree/main/voc-fcn8s-atonce) | - | -     | **65.40** | |
-|FCN8sAtOnce | Ours                                                                                         |11 | 96000 | 64.74 | |
+| Model | Implementation |   epoch | Mean IU | Pretrained Model |
+|:-----:|:--------------:|:-------:|:-------:|:----------------:|
+|FCN32s      | [Original](https://github.com/shelhamer/fcn.berkeleyvision.org/tree/main/voc-fcn32s)       | -   | **63.63** | [Download](https://github.com/wkentaro/pytorch-fcn/blob/45c6b2d3f553cbe6369822d17a7a51dfe9328662/torchfcn/models/fcn32s.py#L34) |
+|FCN32s      | Ours                                                                                         |11 | 62.84 | |
+|FCN16s      | [Original](https://github.com/shelhamer/fcn.berkeleyvision.org/tree/main/voc-fcn16s)       | -  | **65.01** | [Download](https://github.com/wkentaro/pytorch-fcn/blob/45c6b2d3f553cbe6369822d17a7a51dfe9328662/torchfcn/models/fcn16s.py#L17) |
+|FCN16s      | Ours                                                                                         |11  | 64.91 | |
+|FCN8s       | [Original](https://github.com/shelhamer/fcn.berkeleyvision.org/tree/main/voc-fcn8s)        | - | **65.51** | [Download](https://github.com/wkentaro/pytorch-fcn/blob/45c6b2d3f553cbe6369822d17a7a51dfe9328662/torchfcn/models/fcn8s.py#L17) |
+|FCN8s       | Ours                                                                                         | 4| 65.46 | |
+
 
 <img src=".readme/fcn8s_iter28000.jpg" width="50%" />
 Visualization of validation result of FCN8s.
