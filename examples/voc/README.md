@@ -7,13 +7,25 @@
 ```bash
 ./download_dataset.sh
 
-./train_fcn32s.py -g 0
-./train_fcn16s.py -g 0
-./train_fcn8s.py -g 0
-./train_fcn8s_atonce.py -g 0
+./train_fcn32s.py -g 0 --save_ckp
+./train_fcn16s.py -g 0 --save_ckp
+./train_fcn8s.py -g 0 --save_ckp
 
-./view_log logs/XXX/log.csv
 ```
+
+
+## Evaluate
+
+
+```bash
+./download_dataset.sh
+
+./train_fcn32s.py -g 0 -model_file  {model_path} -save_path
+./train_fcn16s.py -g 0 -model_file   {model_path} -save_path
+./train_fcn8s.py -g 0 -model_file  {model_path} -save_path
+
+```
+
 
 
 ## Speed
