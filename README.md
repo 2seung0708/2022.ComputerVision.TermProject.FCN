@@ -32,6 +32,9 @@ pip install torchfcn
 
 ## Training
 
+```bash
+cd ./exmaple/voc
+```
 
 ```bash
 ./download_dataset.sh
