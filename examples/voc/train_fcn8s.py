@@ -38,6 +38,9 @@ def main():
         '--momentum', type=float, default=0.99, help='momentum',
     )
     parser.add_argument(
+        '--save_ckp', type=str, default="None", help='ceckpoint save folder name',
+    )
+    parser.add_argument(
         '--pretrained-model',
         default=torchfcn.models.FCN16s.download(),
         help='pretrained model of FCN16s',
@@ -48,7 +51,10 @@ def main():
     args.git_hash = git_hash()
 
     now = datetime.datetime.now()
-    args.out = osp.join(here, 'logs', now.strftime('%Y%m%d_%H%M%S.%f'))
+    if args.save_ckp == "None":
+        args.out = osp.join(here, 'logs', now.strftime('%Y%m%d_%H%M%S.%f'))
+    else:
+        args.out = osp.join(here,'logs',args.save_ckp+now.strftime('%Y%m%d_%H%M%S.%f'))
 
     os.makedirs(args.out)
     with open(osp.join(args.out, 'config.yaml'), 'w') as f:
@@ -64,7 +70,7 @@ def main():
     # 1. dataset
 
     root = osp.expanduser('~/data/datasets')
-    kwargs = {'num_workers': 4, 'pin_memory': True} if cuda else {}
+    kwargs = {'num_workers': 8, 'pin_memory': True} if cuda else {}
     train_loader = torch.utils.data.DataLoader(
         torchfcn.datasets.SBDClassSeg(root, split='train', transform=True),
         batch_size=1, shuffle=True, **kwargs)

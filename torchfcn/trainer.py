@@ -161,7 +161,7 @@ class Trainer(object):
         }, osp.join(self.out, 'checkpoint.pth.tar'))
         if is_best:
             shutil.copy(osp.join(self.out, 'checkpoint.pth.tar'),
-                        osp.join(self.out, 'model_best.pth.tar'))
+                        osp.join(self.out, self.model.__class__.__name__+'model_best.pth.tar'))
 
         if training:
             self.model.train()

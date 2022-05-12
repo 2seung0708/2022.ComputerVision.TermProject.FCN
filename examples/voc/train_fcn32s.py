@@ -63,7 +63,7 @@ def main():
         '--max-iteration', type=int, default=100000, help='max iteration'
     )
     parser.add_argument(
-        '--lr', type=float, default=1.0e-10, help='learning rate',
+        '--lr', type=float, default=1.0e-10, help='learning rate', # origianl : default=1.0e-10,
     )
     parser.add_argument(
         '--weight-decay', type=float, default=0.0005, help='weight decay',
@@ -71,13 +71,22 @@ def main():
     parser.add_argument(
         '--momentum', type=float, default=0.99, help='momentum',
     )
+    parser.add_argument(
+        '--save_ckp', type=str, default="None", help='ceckpoint save folder name',
+    )
+
     args = parser.parse_args()
 
     args.model = 'FCN32s'
     args.git_hash = git_hash()
 
+    import pdb;pdb.set_trace()
     now = datetime.datetime.now()
-    args.out = osp.join(here, 'logs', now.strftime('%Y%m%d_%H%M%S.%f'))
+    if args.save_ckp == "None":
+        args.out = osp.join(here, 'logs', now.strftime('%Y%m%d_%H%M%S.%f'))
+    else:
+        args.out = osp.join(here,'logs',args.save_ckp+"_"+now.strftime('%Y%m%d_%H%M%S.%f'))
+
 
     os.makedirs(args.out)
     with open(osp.join(args.out, 'config.yaml'), 'w') as f:

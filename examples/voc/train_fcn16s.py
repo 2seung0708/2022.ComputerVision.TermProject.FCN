@@ -38,6 +38,10 @@ def main():
         '--momentum', type=float, default=0.99, help='momentum',
     )
     parser.add_argument(
+        '--save_ckp', type=str, default="None", help='ceckpoint save folder name',
+    )
+
+    parser.add_argument(
         '--pretrained-model',
         default=torchfcn.models.FCN32s.download(),
         help='pretrained model of FCN32s',
@@ -48,13 +52,18 @@ def main():
     args.git_hash = git_hash()
 
     now = datetime.datetime.now()
-    args.out = osp.join(here, 'logs', now.strftime('%Y%m%d_%H%M%S.%f'))
+    if args.save_ckp == "None":
+        args.out = osp.join(here, 'logs', now.strftime('%Y%m%d_%H%M%S.%f'))
+    else:
+        args.out = osp.join(here,'logs',args.save_ckp+now.strftime('%Y%m%d_%H%M%S.%f'))
 
     os.makedirs(args.out)
     with open(osp.join(args.out, 'config.yaml'), 'w') as f:
         yaml.safe_dump(args.__dict__, f, default_flow_style=False)
 
-    os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu)
+    # os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu)
+    os.environ['CUDA_VISIBLE_DEVICES'] = "1, 2"
+
     cuda = torch.cuda.is_available()
 
     torch.manual_seed(1337)

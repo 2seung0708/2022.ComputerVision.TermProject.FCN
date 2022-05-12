@@ -3,6 +3,7 @@
 import argparse
 import os
 import os.path as osp
+import re
 
 import fcn
 import numpy as np
@@ -12,11 +13,11 @@ from torch.autograd import Variable
 import torchfcn
 import tqdm
 
-
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('model_file', help='Model path')
+    parser.add_argument('-model_file', help='Model path')
     parser.add_argument('-g', '--gpu', type=int, default=0)
+    parser.add_argument('-save_path', default=None, help='save path')
     args = parser.parse_args()
 
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu)
@@ -30,7 +31,6 @@ def main():
         num_workers=4, pin_memory=True)
 
     n_class = len(val_loader.dataset.class_names)
-
     if osp.basename(model_file).startswith('fcn32s'):
         model = torchfcn.models.FCN32s(n_class=21)
     elif osp.basename(model_file).startswith('fcn16s'):
@@ -79,7 +79,7 @@ def main():
     metrics = torchfcn.utils.label_accuracy_score(
         label_trues, label_preds, n_class=n_class)
     metrics = np.array(metrics)
-    metrics *= 100
+    metrics *= 100    
     print('''\
 Accuracy: {0}
 Accuracy Class: {1}
@@ -88,6 +88,16 @@ FWAV Accuracy: {3}'''.format(*metrics))
 
     viz = fcn.utils.get_tile_image(visualizations)
     skimage.io.imsave('viz_evaluate.png', viz)
+
+    ## submit 파일 저장하는 부분
+    if args.save_path != None:
+        if args.save_path[-1]=="/":
+            save_path = args.save_path+"test_result.npy"
+        else:
+            save_path = args.save_path+"/test_result.npy"
+    else:
+        save_path = "/".join(model_file.split("/")[:-1])+"/test_result.npy"
+    np.save(save_path,label_preds)
 
 
 if __name__ == '__main__':

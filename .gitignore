@@ -3,3 +3,7 @@
 
 build/
 dist/
+
+pascal_voc/
+
+examples/voc/logs
